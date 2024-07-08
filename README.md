@@ -1,43 +1,67 @@
-# kmip-health-checker
+# KMIP Health Checker
 
-kmip-health checker is a go implementation of a simple healthchecker for a KMIP server.
+KMIP Health Checker is a Go implementation of a simple health checker for a KMIP server.
 
-It was built using the Flamingo web framework and the kmip-go library.
+This tool is built using the [Flamingo](https://github.com/i-love-flamingo) web framework and the `kmip-go` library. It
+dynamically creates and then deletes a number of keys on a KMIP server to verify that it is working properly.
 
-It creates a dynamic number of keys on a KMIP server and deletes them directly afterwards.
+A use case would be to deploy it in a Kubernetes cluster and setup a health check to ensure that a KMIP server inside
+the cluster is functioning properly.
 
 ## Example
 
-A fully configured ready-to-run example using pykmip as the KMIP server can be found
-here: https://github.com/FriedrichRezner/kmip-health-checker-example
+A fully configured, ready-to-run example repository using `pykmip` as the KMIP server can be
+found [here](https://github.com/FriedrichRezner/kmip-health-checker-example).
 
-## Getting started
+## Getting Started
 
-First step is having a running KMIP server accessible through your network.
+To get started, a KMIP server must be running and be accessible through the network.
 
-I strongly suggest to try the ready-to-run example - but in case you want to set it up by hand, you can use the
-following guide.
+The ready-to-run example repository is a fully functional implementation. But if manual setup is preferred, the
+following steps have to be done.
 
-Second step is to set the following env variables:
+### Configuration
 
-| Env variable            | Description                                                                                         |
-|-------------------------|-----------------------------------------------------------------------------------------------------|
-| KMIP_SERVER_HOST        | Host of your KMIP server                                                                            |
-| KMIP_SERVER_PORT        | Port of your KMIP server                                                                            |
-| KMIP_SERVER_CIPHER_TYPE | Golang cipher type for the key and certificate (See https://go.dev/src/crypto/tls/cipher_suites.go) |
-| KMIP_SERVER_CERT_FILE   | Path to the cert file                                                                               |
-| KMIP_SERVER_KEY_FILE    | Path to the key file                                                                                |
+Set the following environment variables:
 
-Then you should execute
+| Environment Variable      | Description                                                                                                                 |
+|---------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `KMIP_SERVER_HOST`        | Host of the KMIP server                                                                                                     |
+| `KMIP_SERVER_PORT`        | Port of the KMIP server                                                                                                     |
+| `KMIP_SERVER_CIPHER_TYPE` | Golang cipher type for the key and certificate (See [Golang Cipher Suites](https://go.dev/src/crypto/tls/cipher_suites.go)) |
+| `KMIP_SERVER_CERT_FILE`   | Path to the certificate file                                                                                                |
+| `KMIP_SERVER_KEY_FILE`    | Path to the key file                                                                                                        |
 
-`go run main.go serve`
+### Running the Health Checker
 
-If everything worked, you can find a running KMIP health checker on your machine:
+After setting the environment variables, execute the following command:
 
-http://localhost:3322/health
+```sh
+go install
+go run main.go serve
+```
+
+If you prefer using Docker, you can start the server using this command. You need also have to provide the correct certificates.
+
+```sh
+docker build -t kmip-health-checker .
+docker run -p 3322:3322 \
+-e KMIP_SERVER_HOST=your_kmip_server_host \
+-e KMIP_SERVER_PORT=your_kmip_server_port \
+-e KMIP_SERVER_CIPHER_TYPE=123 \
+-e KMIP_SERVER_CERT_FILE=your_cert_file_path \
+-e KMIP_SERVER_KEY_FILE=your_key_file_path \
+kmip-health-checker
+```
+
+If everything is configured correctly, the KMIP Health Checker can be accessed at:
+
+[http://localhost:3322/health](http://localhost:3322/health)
 
 ## Unit Tests
 
-You can run unit tests by executing
+To run unit tests, execute:
 
-`go test ./...`
+```sh
+go test ./...
+```
