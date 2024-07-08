@@ -13,6 +13,9 @@ the cluster is functioning properly.
 A fully configured, ready-to-run example repository using `pykmip` as the KMIP server can be
 found [here](https://github.com/FriedrichRezner/kmip-health-checker-example).
 
+# Prerequisites
+The application  requires Go version 1.22 or above.
+
 ## Getting Started
 
 To get started, a KMIP server must be running and be accessible through the network.
