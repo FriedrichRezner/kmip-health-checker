@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: KMIP Health Checker
+  version: 1.0.0
+servers:
+  - url: http://localhost:3322
+    description: Local server
+paths:
+  /health:
+    get:
+      summary: Check the health of the given KMIP system by creating and destroying amount of keys
+      parameters:
+        - name: amount
+          in: query
+          description: Keys that will be created and destroyed
+          required: false
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  create_duration:
+                    type: number
+                    format: float
+                    description: Duration to create in seconds
+                  destroy_duration:
+                    type: number
+                    format: float
+                    description: Duration to destroy in seconds
+                  amount:
+                    type: integer
+                    description: The processed amount
+        '500':
+          description: Error response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                    example: 500
+                  error:
+                    type: string
+                    description: Error message
+                    example: "health check failed. see logs for more information"

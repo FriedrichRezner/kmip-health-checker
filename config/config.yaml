@@ -1,0 +1,8 @@
+app:
+  kmipServer:
+    host: "%%ENV:KMIP_SERVER_HOST%%"
+    port: "%%ENV:KMIP_SERVER_PORT%%"
+    certFile: "%%ENV:KMIP_SERVER_CERT_FILE%%"
+    keyFile: "%%ENV:KMIP_SERVER_KEY_FILE%%"
+    cipherType: %%ENV:KMIP_SERVER_CIPHER_TYPE%%
+    timeout: "3s"
