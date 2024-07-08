@@ -2,8 +2,9 @@
 
 KMIP Health Checker is a Go implementation of a simple health checker for a KMIP server.
 
-This tool is built using the [Flamingo](https://github.com/i-love-flamingo) web framework and the `kmip-go` library. It
-dynamically creates and then deletes a number of keys on a KMIP server to verify that it is working properly.
+This tool is built using the [Flamingo](https://github.com/i-love-flamingo) web framework and
+the [kmip-go](https://github.com/ThalesGroup/kmip-go) library. It dynamically creates and then deletes a number of keys
+on a KMIP server to verify that it is working properly.
 
 A use case would be to deploy it in a Kubernetes cluster and setup a health check to ensure that a KMIP server inside
 the cluster is functioning properly.
@@ -14,7 +15,8 @@ A fully configured, ready-to-run example repository using `pykmip` as the KMIP s
 found [here](https://github.com/FriedrichRezner/kmip-health-checker-example).
 
 # Prerequisites
-The application  requires Go version 1.22 or above.
+
+The application requires Go version 1.22 or above.
 
 ## Getting Started
 
@@ -44,7 +46,8 @@ go install
 go run main.go serve
 ```
 
-If you prefer using Docker, you can start the server using this command. You need also have to provide the correct certificates.
+If you prefer using Docker, you can start the server using this command. You need also have to provide the correct
+certificates.
 
 ```sh
 docker build -t kmip-health-checker .
