@@ -1,4 +1,7 @@
-# KMIP Health Checker
+# KMIP Health Checker 
+[![Go Reference](https://pkg.go.dev/badge/github.com/friedrichrezner/kmip-health-checker.svg)](https://pkg.go.dev/github.com/friedrichrezner/kmip-health-checker)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/friedrichrezner/kmip-health-checker)
+[![Go Report Card](https://goreportcard.com/badge/github.com/friedrichrezner/kmip-health-checker)](https://goreportcard.com/report/github.com/friedrichrezner/kmip-health-checker)
 
 KMIP Health Checker is a Go implementation of a simple health checker for a KMIP server.
 
