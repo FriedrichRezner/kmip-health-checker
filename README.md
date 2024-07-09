@@ -2,30 +2,28 @@
 
 KMIP Health Checker is a Go implementation of a simple health checker for a KMIP server.
 
-This tool is built using the [Flamingo](https://github.com/i-love-flamingo) web framework and
-the [kmip-go](https://github.com/ThalesGroup/kmip-go) library. It dynamically creates and then deletes a number of keys
-on a KMIP server to verify that it is working properly.
+This tool is built using the [Flamingo](https://github.com/i-love-flamingo/flamingo) web framework and
+the [kmip-go](https://github.com/ThalesGroup/kmip-go) library.
 
-A use case would be to deploy it in a Kubernetes cluster and setup a health check to ensure that a KMIP server inside
-the cluster is functioning properly.
+It dynamically creates and then deletes a number of keys on a KMIP server to verify that it is working properly. A use
+case would be to deploy it in an environment with a KMIP server and setup an external health check to ensure that a
+KMIP server is functioning properly.
 
 ## Example
 
 A fully configured, ready-to-run example repository using `pykmip` as the KMIP server can be
 found [here](https://github.com/FriedrichRezner/kmip-health-checker-example).
 
-# Prerequisites
-
-The application requires Go version 1.22 or above.
+## Prerequisites
 
 ## Getting Started
 
-To get started, a KMIP server must be running and be accessible through the network.
+The application requires at least Go version 1.22 or a Docker environment. A KMIP server must be running and
+accessible through the network.
 
-The ready-to-run example repository is a fully functional implementation. But if manual setup is preferred, the
+The [ready-to-run example repository](https://github.com/FriedrichRezner/kmip-health-checker-example) is a fully
+functional implementation. For manual setup, the
 following steps have to be done.
-
-### Configuration
 
 Set the following environment variables:
 
@@ -37,17 +35,22 @@ Set the following environment variables:
 | `KMIP_SERVER_CERT_FILE`   | Path to the certificate file                                                                                                |
 | `KMIP_SERVER_KEY_FILE`    | Path to the key file                                                                                                        |
 
-### Running the Health Checker
+Then you can either run it locally or start it in a Docker container.
 
-After setting the environment variables, execute the following command:
+### Locally
+
+After setting the environment variables above, execute the following command:
 
 ```sh
-go install
-go run main.go serve
+go mod download
+go build -o kmip-health-checker
+./kmip-health-checker serve
 ```
 
-If you prefer using Docker, you can start the server using this command. You need also have to provide the correct
-certificates.
+If everything is configured correctly, the KMIP Health Checker can be accessed
+at: [http://localhost:3322/health](http://localhost:3322/health)
+
+### Docker
 
 ```sh
 docker build -t kmip-health-checker .
@@ -60,9 +63,13 @@ docker run -p 3322:3322 \
 kmip-health-checker
 ```
 
-If everything is configured correctly, the KMIP Health Checker can be accessed at:
+If everything is configured correctly, the KMIP Health Checker can be accessed
+at: [http://localhost:3322/health](http://localhost:3322/health)
 
-[http://localhost:3322/health](http://localhost:3322/health)
+## Acessing the Health Check
+
+A complete OpenAPI specification with available requests, parameters and responses can be found in the root of the
+directory: [openapi.yaml](openapi.yaml).
 
 ## Unit Tests
 
@@ -70,4 +77,11 @@ To run unit tests, execute:
 
 ```sh
 go test ./...
+```
+
+When interfaces are changed during development, the mocks have to be regenerated. To do this, execute
+the [doc.go](doc.go) file in the directory:
+
+```sh
+go generate doc.go
 ```

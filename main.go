@@ -4,7 +4,7 @@ import (
 	"flamingo.me/dingo"
 	"flamingo.me/flamingo/v3"
 	"flamingo.me/flamingo/v3/core/requestlogger"
-	"kmip-health-checker/src/health_check"
+	"github.com/friedrichrezner/kmip-health-checker/src/health_check"
 )
 
 func main() {

@@ -3,10 +3,11 @@ package application
 import (
 	"context"
 	"errors"
-	"flamingo.me/flamingo/v3/framework/flamingo"
-	"github.com/stretchr/testify/suite"
-	"kmip-health-checker/src/health_check/domain"
 	"testing"
+
+	"flamingo.me/flamingo/v3/framework/flamingo"
+	"github.com/friedrichrezner/kmip-health-checker/src/health_check/domain"
+	"github.com/stretchr/testify/suite"
 )
 
 type HealthCheckServiceTestSuite struct {

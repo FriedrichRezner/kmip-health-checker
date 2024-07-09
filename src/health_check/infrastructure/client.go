@@ -4,10 +4,11 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"time"
+
 	"github.com/gemalto/kmip-go"
 	"github.com/gemalto/kmip-go/kmip14"
 	"github.com/gemalto/kmip-go/ttlv"
-	"time"
 )
 
 const (
@@ -15,16 +16,21 @@ const (
 )
 
 type (
+	// KMIPClient is the interface for creating and destroying keys using the kmip-go library for the requests
 	KMIPClient interface {
 		Create(ctx context.Context, msg kmip.RequestMessage) (*kmip.CreateResponsePayload, error)
 		Destroy(ctx context.Context, msg kmip.RequestMessage) (*kmip.DestroyResponsePayload, error)
 	}
+
+	// KMIPClientImpl is the implementation of the KMIPClient interface
 	KMIPClientImpl struct {
 		addr       string
 		timeout    time.Duration
 		cert       tls.Certificate
 		cipherType uint16
 	}
+
+	// config is configuration struct which contains the configuration for the KMIP server connection
 	config struct {
 		Host       string `inject:"config:app.kmipServer.host"`
 		Port       string `inject:"config:app.kmipServer.port"`
@@ -35,6 +41,7 @@ type (
 	}
 )
 
+// Inject dependencies
 func (c *KMIPClientImpl) Inject(cfg *config) {
 	duration, err := time.ParseDuration(cfg.Timeout)
 	if err != nil {
@@ -52,6 +59,7 @@ func (c *KMIPClientImpl) Inject(cfg *config) {
 	c.cipherType = uint16(cfg.CipherType)
 }
 
+// Create sends a create request to the KMIP server and returns the response payload
 func (c *KMIPClientImpl) Create(ctx context.Context, msg kmip.RequestMessage) (*kmip.CreateResponsePayload, error) {
 	bi, err := c.execute(ctx, msg)
 	if err != nil {
@@ -68,6 +76,7 @@ func (c *KMIPClientImpl) Create(ctx context.Context, msg kmip.RequestMessage) (*
 	return &respPayload, nil
 }
 
+// Destroy sends a destroy request to the KMIP server and returns the response payload
 func (c *KMIPClientImpl) Destroy(ctx context.Context, msg kmip.RequestMessage) (*kmip.DestroyResponsePayload, error) {
 	bi, err := c.execute(ctx, msg)
 	if err != nil {
@@ -84,6 +93,8 @@ func (c *KMIPClientImpl) Destroy(ctx context.Context, msg kmip.RequestMessage) (
 	return &respPayload, nil
 }
 
+// execute sends the given request message to the KMIP server, does some basic validations regarding
+// the batch count and the status of the batch item and returns the first response batch item
 func (c *KMIPClientImpl) execute(ctx context.Context, msg kmip.RequestMessage) (*kmip.ResponseBatchItem, error) {
 	conn, err := c.tlsConn(ctx)
 	if err != nil {
@@ -123,6 +134,7 @@ func (c *KMIPClientImpl) execute(ctx context.Context, msg kmip.RequestMessage) (
 	return &bi, nil
 }
 
+// tlsConn creates a TLS connection to the KMIP server
 func (c *KMIPClientImpl) tlsConn(ctx context.Context) (*tls.Conn, error) {
 	dialer := tls.Dialer{
 		Config: &tls.Config{

@@ -1,4 +1,4 @@
-module kmip-health-checker
+module github.com/friedrichrezner/kmip-health-checker
 
 go 1.22.5
 

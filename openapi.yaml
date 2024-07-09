@@ -8,7 +8,7 @@ servers:
 paths:
   /health:
     get:
-      summary: Check the health of the given KMIP system by creating and destroying amount of keys
+      summary: Check the health of a KMIP system by creating and destroying keys
       parameters:
         - name: amount
           in: query

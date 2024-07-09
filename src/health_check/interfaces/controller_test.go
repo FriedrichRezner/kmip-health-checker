@@ -3,11 +3,13 @@ package interfaces
 import (
 	"context"
 	"errors"
-	"flamingo.me/flamingo/v3/framework/web"
-	"github.com/stretchr/testify/suite"
-	"kmip-health-checker/src/health_check/domain"
 	"net/http"
 	"testing"
+
+	"github.com/friedrichrezner/kmip-health-checker/src/health_check/domain"
+
+	"flamingo.me/flamingo/v3/framework/web"
+	"github.com/stretchr/testify/suite"
 )
 
 type HealthCheckControllerTestSuite struct {
@@ -47,6 +49,24 @@ func (t *HealthCheckControllerTestSuite) TestHealthCheck() {
 
 		t.True(ok)
 	})
+
+	t.Run("success with specified amount", func() {
+		expected := domain.HealthCheckResult{Amount: 10}
+		httpReq, _ := http.NewRequest(http.MethodGet, "localhost?amount=10", nil)
+		req := web.CreateRequest(
+			httpReq,
+			web.EmptySession(),
+		)
+
+		t.healthCheckerMock.On("PerformCheck", t.context, 10).Return(&expected, nil).Once()
+
+		res := t.healthCheckController.HealthCheck(t.context, req)
+
+		_, ok := res.(web.Result)
+
+		t.True(ok)
+	})
+
 	t.Run("health check fails", func() {
 		httpReq, _ := http.NewRequest(http.MethodGet, "", nil)
 		req := web.CreateRequest(
