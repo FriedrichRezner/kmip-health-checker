@@ -69,11 +69,6 @@ kmip-health-checker
 If everything is configured correctly, the KMIP Health Checker can be accessed
 at: [http://localhost:3322/health](http://localhost:3322/health)
 
-## Acessing the Health Check
-
-A complete OpenAPI specification with available requests, parameters and responses can be found in the root of the
-directory: [openapi.yaml](openapi.yaml).
-
 ## Unit Tests
 
 To run unit tests, execute:
@@ -82,9 +77,14 @@ To run unit tests, execute:
 go test ./...
 ```
 
-When interfaces are changed during development, the mocks have to be regenerated. To do this, execute
+When interfaces are changed during development, mocks have to be regenerated. To do this, execute
 the [doc.go](doc.go) file in the directory:
 
 ```sh
 go generate doc.go
 ```
+
+## OpenAPI documentation
+
+A complete OpenAPI specification with available requests, parameters and responses can be found in the root of the
+directory: [openapi.yaml](openapi.yaml).
