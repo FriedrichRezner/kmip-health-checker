@@ -9,15 +9,13 @@ This tool is built using the [Flamingo](https://github.com/i-love-flamingo/flami
 the [kmip-go](https://github.com/ThalesGroup/kmip-go) library.
 
 It dynamically creates and then deletes a number of keys on a KMIP server to verify that it is working properly. A use
-case would be to deploy it in an environment with a KMIP server and setup an external health check to ensure that a
+case would be to deploy it in an environment with a KMIP server to setup an external health check to ensure that a
 KMIP server is functioning properly.
 
 ## Example
 
 A fully configured, ready-to-run example repository using `pykmip` as the KMIP server can be
 found [here](https://github.com/FriedrichRezner/kmip-health-checker-example).
-
-## Prerequisites
 
 ## Getting Started
 
