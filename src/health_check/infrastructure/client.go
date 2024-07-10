@@ -114,6 +114,9 @@ func (c *KMIPClientImpl) execute(ctx context.Context, msg kmip.RequestMessage) (
 
 	decoder := ttlv.NewDecoder(conn)
 	resp, err := decoder.NextTTLV()
+	if err != nil {
+		return nil, err
+	}
 
 	var respMsg kmip.ResponseMessage
 	err = decoder.DecodeValue(&respMsg, resp)
